@@ -93,6 +93,17 @@ export const CoursePage: React.FC = () => {
     setCurLesson(cardNum);
   }
 
+  function timeUPD() {
+    if (id && videoRef.current)
+      dispatch(
+        setWatchedTime({
+          courseId: id,
+          lessonNum: curLesson,
+          time: videoRef.current.currentTime,
+        })
+      );
+  }
+
   return (
     <PageWrapper>
       {course.title ? (
@@ -117,20 +128,7 @@ export const CoursePage: React.FC = () => {
               {!showError &&
               course.lessons[curLesson].status === "unlocked" &&
               course.lessons[curLesson].link ? (
-                <Video
-                  controls
-                  ref={videoRef}
-                  onTimeUpdate={() => {
-                    if (id && videoRef.current)
-                      dispatch(
-                        setWatchedTime({
-                          courseId: id,
-                          lessonNum: curLesson,
-                          time: videoRef.current.currentTime,
-                        })
-                      );
-                  }}
-                />
+                <Video controls ref={videoRef} onTimeUpdate={() => timeUPD()} />
               ) : (
                 <LockedInfo>
                   <Title>
